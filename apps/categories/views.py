@@ -17,7 +17,7 @@ class CategoryViewSet(
 ):
     permission_classes = [AllowAny]
     serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+    queryset = Category.objects.select_related("parent").all()
 
     def add_node(self, item: Dict, parent: Optional[Category] = None) -> None:
         """ Walks through dictionary and creates child nodes """
