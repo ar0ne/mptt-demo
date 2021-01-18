@@ -9,6 +9,9 @@ class CategoryModelSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
+            "lft",
+            "rgt",
+            "parent_id",
         )
 
 
@@ -34,4 +37,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "parents",
             "children",
             "siblings",
+            "lft",
+            "rgt",
+            "parent_id",
         )
