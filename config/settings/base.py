@@ -7,7 +7,7 @@ import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # mptt_demo/
-APPS_DIR = ROOT_DIR / "mptt_demo"
+APPS_DIR = ROOT_DIR / "apps"
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
@@ -70,8 +70,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "mptt_demo.core.apps.CoreConfig",
-    "mptt_demo.categories.apps.CategoriesConfig",
+    "mptt_demo.apps.core.apps.CoreAppConfig",
+    "mptt_demo.apps.categories.apps.CategoriesAppConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

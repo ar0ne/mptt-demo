@@ -26,6 +26,6 @@ if __name__ == "__main__":
     # This allows easy placement of apps within the interior
     # mptt_demo directory.
     current_path = Path(__file__).parent.resolve()
-    sys.path.append(str(current_path / "mptt_demo"))
+    sys.path.append(str(current_path / "apps"))
 
     execute_from_command_line(sys.argv)
