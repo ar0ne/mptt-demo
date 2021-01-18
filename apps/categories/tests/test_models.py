@@ -6,24 +6,24 @@ from apps.categories.tests.conftest import BaseTestCase
 
 class TestCategoryModel(BaseTestCase):
     def test_get_parents(self):
-        self.assertEqual([], list(self.main.get_parents()))
-        self.assertEqual([self.main], list(self.cat1.get_parents()))
-        self.assertEqual([self.cat1, self.main], list(self.cat11.get_parents()))
-        self.assertEqual([self.main], list(self.cat2.get_parents()))
+        self.assertEqual([], list(self.root.get_parents()))
+        self.assertEqual([self.root], list(self.cat1.get_parents()))
+        self.assertEqual([self.cat1, self.root], list(self.cat11.get_parents()))
+        self.assertEqual([self.root], list(self.cat2.get_parents()))
 
     def test_get_children(self):
-        self.assertEqual([self.cat1, self.cat2], list(self.main.get_children()))
+        self.assertEqual([self.cat1, self.cat2], list(self.root.get_children()))
         self.assertEqual([], list(self.cat2.get_children()))
         self.assertEqual([self.cat11, self.cat12], list(self.cat1.get_children()))
 
     def test_get_all_children(self):
         self.assertEqual(
             [self.cat1, self.cat11, self.cat12, self.cat2],
-            list(self.main.get_all_children()),
+            list(self.root.get_all_children()),
         )
 
     def test_get_siblings(self):
-        self.assertEqual([], list(self.main.get_siblings()))
+        self.assertEqual([], list(self.root.get_siblings()))
         self.assertEqual([self.cat2], list(self.cat1.get_siblings()))
         self.assertEqual([self.cat1], list(self.cat2.get_siblings()))
 
@@ -31,9 +31,9 @@ class TestCategoryModel(BaseTestCase):
         self.assertEqual([self.cat1, self.cat2], list(self.cat2.get_siblings(True)))
 
     def test_add_node(self):
-        cat3 = Category.add_node("cat3", self.main)
+        cat3 = Category.add_node("cat3", self.root)
 
-        self.main.refresh_from_db()
+        self.root.refresh_from_db()
 
         self.assertTrue(cat3.parent.lft < cat3.lft < cat3.parent.rgt)
         self.assertTrue(cat3.parent.lft < cat3.rgt < cat3.parent.rgt)

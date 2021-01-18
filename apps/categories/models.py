@@ -1,3 +1,4 @@
+""" Category app's models """
 from apps.core.models import MPTTModel
 
 

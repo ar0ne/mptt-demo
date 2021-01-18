@@ -13,8 +13,8 @@ class TestCategoryModelSerializer(BaseTestCase):
     """ Tests for CategoryModelSerializer """
 
     def test_serialization(self):
-        ser = CategoryModelSerializer(self.main)
-        self.assertDictEqual({"id": self.main.id, "name": self.main.name}, ser.data)
+        ser = CategoryModelSerializer(self.root)
+        self.assertDictEqual({"id": self.root.id, "name": self.root.name}, ser.data)
 
 
 class TestCategorySerializer(BaseTestCase):
@@ -26,7 +26,7 @@ class TestCategorySerializer(BaseTestCase):
             {
                 "id": self.cat1.id,
                 "name": self.cat1.name,
-                "parents": [{"id": self.main.id, "name": self.main.name}],
+                "parents": [{"id": self.root.id, "name": self.root.name}],
                 "children": [
                     {
                         "id": self.cat11.id,
@@ -45,7 +45,7 @@ class TestCategoryTreeSerializer(BaseTestCase):
 
     def test_not_unique_name_validation(self):
         cases = (
-            {"name": self.main.name},
+            {"name": self.root.name},
             {"name": "unique", "children": [{"name": self.cat2.name}]},
             {
                 "name": "unique",

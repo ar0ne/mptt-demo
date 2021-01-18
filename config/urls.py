@@ -4,8 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path("", include("config.api_router")),
     path(settings.ADMIN_URL, admin.site.urls),
-    path("api/", include("config.api_router")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

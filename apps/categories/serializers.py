@@ -1,3 +1,4 @@
+""" Category app's serializers """
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_recursive.fields import RecursiveField
