@@ -20,7 +20,7 @@ class NodeItem:
 def add_node(item, parent=None):
     node_name = item.name
 
-    if not Category.is_exists(node_name):
+    if not Category.objects.filter(name=node_name).exists():
         node = Category.add_node(node_name, parent)
     else:
         node = Category.objects.get(name=node_name)
