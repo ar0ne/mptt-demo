@@ -68,7 +68,3 @@ class MPTTModel(models.Model):
         )
 
     objects = models.Manager()
-
-    def __str__(self) -> str:
-        """ Get string representation """
-        return f"{self.pk} - {self.name}"

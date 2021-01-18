@@ -1,7 +1,9 @@
 MPTT Demo
 =========
 
-MPTT (modified preorder tree traversal) demo
+MPTT (modified preorder tree traversal) demo.
+
+A simple Categories API that stores category tree to database and returns category parents, children and siblings by category id.
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
@@ -14,13 +16,102 @@ MPTT (modified preorder tree traversal) demo
 :License: MIT
 
 
+API
+---
+
+**POST /categories/**
+
+.. code-block:: json
+
+  {
+    "name": "Category 1",
+    "children": [
+      {
+        "name": "Category 1.1",
+        "children": [
+          {
+            "name": "Category 1.1.1",
+            "children": [
+              {
+                "name": "Category 1.1.1.1"
+              },
+              {
+                "name": "Category 1.1.1.2"
+              },
+              {
+                "name": "Category 1.1.1.3"
+              }
+            ]
+          },
+          {
+            "name": "Category 1.1.2",
+            "children": [
+              {
+                "name": "Category 1.1.2.1"
+              },
+              {
+                "name": "Category 1.1.2.2"
+              },
+              {
+                "name": "Category 1.1.2.3"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
+
+**GET /categories/{ID}**
+
+.. code-block:: json
+
+  {
+    "id": 5,
+    "name": "Category 1.1.1",
+    "parents": [
+      {
+        "id": 4,
+        "name": "Category 1.1"
+      },
+      {
+        "id": 3,
+        "name": "Category 2"
+      }
+    ],
+    "children": [
+      {
+        "id": 6,
+        "name": "Category 1.1.1.1"
+      },
+      {
+        "id": 7,
+        "name": "Category 1.1.1.2"
+      },
+      {
+        "id": 8,
+        "name": "Category 1.1.1.3"
+      }
+    ],
+    "siblings": [
+      {
+        "id": 9,
+        "name": "Category 1.1.2"
+      }
+    ]
+  }
+
 Settings
 --------
 
-`createdb mptt -U postgres`
+Create database:
 
-`export DATABASE_URL=postgres://postgres:debug@127.0.0.1:5432/mptt`
+*createdb mptt -U postgres*
 
+Set environment variable:
+
+E.g. *export DATABASE_URL=postgres://postgres:debug@127.0.0.1:5432/mptt*
 
 Basic Commands
 --------------
@@ -32,7 +123,7 @@ Running type checks with mypy:
 
 ::
 
-  $ mypy mptt_demo
+  $ mypy apps
 
 Test coverage
 ^^^^^^^^^^^^^
@@ -48,20 +139,4 @@ Running tests with py.test
 
 ::
 
-  $ pytest
-
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
-
-
-
-
-
-Deployment
-----------
-
-The following details how to deploy this application.
+  $ pytest .
