@@ -65,6 +65,7 @@ class TestCategoryTreeSerializer(BaseTestCase):
                     }
                 ],
             },
+            {"name": "A" * 126},
         )
 
         for data in cases:

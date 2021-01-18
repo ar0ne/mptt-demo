@@ -46,9 +46,10 @@ class MPTTModel(models.Model):
     @transaction.atomic
     def add_node(cls, name: str, parent: Optional["MPTTModel"] = None) -> "MPTTModel":
         """
-        Adds new child node.
+        Adds new child node. Let's assume that there is only one root node.
+
         :param str name: An unique name of node.
-        :param Optional[MPTTModel] parent: A parent node if exists. Otherwise, create root node.
+        :param Optional[MPTTModel] parent: A parent node if exists. Otherwise, create a root node.
         :return New node in tree.
         """
         if not parent:

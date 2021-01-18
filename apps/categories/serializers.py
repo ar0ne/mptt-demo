@@ -33,7 +33,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class CategoryTreeSerializer(serializers.ModelSerializer):
     name = serializers.CharField(
-        max_length=124, validators=[UniqueValidator(queryset=Category.objects.all())]
+        max_length=125, validators=[UniqueValidator(queryset=Category.objects.all())]
     )
     children = serializers.ListField(child=RecursiveField(), required=False)
 
