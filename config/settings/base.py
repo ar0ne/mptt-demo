@@ -70,8 +70,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "mptt_demo.apps.core.apps.CoreAppConfig",
-    "mptt_demo.apps.categories.apps.CategoriesAppConfig",
+    "apps.core.apps.CoreAppConfig",
+    "apps.categories.apps.CategoriesAppConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

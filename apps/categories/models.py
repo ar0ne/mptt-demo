@@ -1,4 +1,4 @@
-from mptt_demo.apps.core.models import MPTTModel
+from apps.core.models import MPTTModel
 
 
 class Category(MPTTModel):

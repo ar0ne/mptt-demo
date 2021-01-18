@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+from rest_framework_recursive.fields import RecursiveField
 
-from mptt_demo.apps.categories.models import Category
+from apps.categories.models import Category
 
 
 class CategoryModelSerializer(serializers.ModelSerializer):
@@ -9,16 +11,13 @@ class CategoryModelSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "lft",
-            "rgt",
-            "parent_id",
         )
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    parents = CategoryModelSerializer(source="get_parents", many=True)
-    children = CategoryModelSerializer(source="get_children", many=True)
-    siblings = CategoryModelSerializer(source="get_siblings", many=True)
+    parents = CategoryModelSerializer(source="get_parents", many=True, read_only=True)
+    children = CategoryModelSerializer(source="get_children", many=True, read_only=True)
+    siblings = CategoryModelSerializer(source="get_siblings", many=True, read_only=True)
 
     class Meta:
         model = Category
@@ -28,7 +27,18 @@ class CategorySerializer(serializers.ModelSerializer):
             "parents",
             "children",
             "siblings",
-            "lft",
-            "rgt",
-            "parent_id",
+        )
+
+
+class CategoryTreeSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        max_length=124, validators=[UniqueValidator(queryset=Category.objects.all())]
+    )
+    children = serializers.ListField(child=RecursiveField(), required=False)
+
+    class Meta:
+        model = Category
+        fields = (
+            "name",
+            "children",
         )

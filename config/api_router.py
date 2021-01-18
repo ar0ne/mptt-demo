@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from mptt_demo.apps.categories.views import CategoryViewSet
+from apps.categories.views import CategoryViewSet
 
 if settings.DEBUG:
     router = DefaultRouter()

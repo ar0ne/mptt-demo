@@ -42,8 +42,12 @@ class MPTTModel(models.Model):
     @transaction.atomic
     def add_node(cls, name: str, parent: Optional["MPTTModel"] = None) -> "MPTTModel":
         if not parent:
-            # add a root node
-            return cls.objects.create(name=name, lft=1, rgt=2, parent=None)
+            # add a root node if not exists
+            parent, created = cls.objects.get_or_create(
+                parent=None, defaults={"name": name, "lft": 1, "rgt": 2}
+            )
+            if created:
+                return parent
 
         cls.objects.filter(rgt__gt=parent.lft).update(rgt=F("rgt") + 2)
         cls.objects.filter(lft__gt=parent.lft).update(lft=F("lft") + 2)

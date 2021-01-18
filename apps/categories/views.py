@@ -1,33 +1,18 @@
-from dataclasses import dataclass
-from typing import List, Optional
-
-from dacite import from_dict
 from rest_framework import mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from mptt_demo.apps.categories.models import Category
-from mptt_demo.apps.categories.serializers import CategorySerializer
-
-
-@dataclass
-class NodeItem:
-    name: str
-    children: Optional[List["NodeItem"]]
+from apps.categories.models import Category
+from apps.categories.serializers import CategorySerializer, CategoryTreeSerializer
 
 
 def add_node(item, parent=None):
-    node_name = item.name
+    node = Category.add_node(item["name"], parent)
 
-    if not Category.objects.filter(name=node_name).exists():
-        node = Category.add_node(node_name, parent)
-    else:
-        node = Category.objects.get(name=node_name)
-
-    if item.children and len(item.children):
-        for it in item.children:
-            add_node(it, node)
+    if "children" in item and len(item["children"]):
+        for child_item in item["children"]:
+            add_node(child_item, node)
 
 
 class CategoryViewSet(
@@ -46,8 +31,9 @@ class CategoryViewSet(
         return Response()
 
     def create(self, request, *args, **kwargs):
-        item = from_dict(data_class=NodeItem, data=request.data)
+        serializer = CategoryTreeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        add_node(item)
+        add_node(serializer.validated_data)
 
         return Response()

@@ -24,7 +24,7 @@ if __name__ == "__main__":
         raise
 
     # This allows easy placement of apps within the interior
-    # mptt_demo directory.
+    # apps directory.
     current_path = Path(__file__).parent.resolve()
     sys.path.append(str(current_path / "apps"))
 
