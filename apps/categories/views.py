@@ -27,7 +27,7 @@ class CategoryViewSet(
             for child_item in item["children"]:
                 self.add_node(child_item, node)
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs) -> Response:
         """ Create category tree """
         serializer = CategoryTreeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -18,19 +18,23 @@ class MPTTModel(models.Model):
         ordering = ["name"]
 
     def get_parents(self) -> "QuerySet[MPTTModel]":
+        """ Get parent nodes """
         return self.__class__.objects.filter(
             lft__lt=self.lft, rgt__gt=self.rgt
         ).order_by("rgt")
 
     def get_all_children(self) -> "QuerySet[MPTTModel]":
+        """ Get all children nodes"""
         return self.__class__.objects.filter(
             lft__gt=self.lft, rgt__lt=self.rgt
         ).order_by("lft")
 
     def get_children(self) -> "QuerySet[MPTTModel]":
+        """ Get children nodes"""
         return self.__class__.objects.filter(parent=self).order_by("name")
 
-    def get_siblings(self, include_self=False):
+    def get_siblings(self, include_self=False) -> "QuerySet[MPTTModel]":
+        """ Get siblings nodes """
         qs = self.__class__.objects.filter(parent=self.parent)
 
         if not include_self:
@@ -42,7 +46,7 @@ class MPTTModel(models.Model):
     @transaction.atomic
     def add_node(cls, name: str, parent: Optional["MPTTModel"] = None) -> "MPTTModel":
         if not parent:
-            # add a root node if not exists
+            # add a root node if not exists yet
             parent, created = cls.objects.get_or_create(
                 parent=None, defaults={"name": name, "lft": 1, "rgt": 2}
             )
@@ -58,5 +62,6 @@ class MPTTModel(models.Model):
 
     objects = models.Manager()
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """ Get string representation """
         return f"{self.id} - {self.name}"
