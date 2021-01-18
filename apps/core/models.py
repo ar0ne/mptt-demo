@@ -38,9 +38,6 @@ class MPTTModel(models.Model):
 
         return qs
 
-    def has_children(self) -> bool:
-        return self.__class__.objects.filter(parent=self).exists()
-
     @classmethod
     @transaction.atomic
     def add_node(cls, name: str, parent: Optional["MPTTModel"] = None) -> "MPTTModel":
