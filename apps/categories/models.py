@@ -1,5 +1,6 @@
 from django.db import models, transaction
 from django.db.models.expressions import F
+from django.db.models.query import QuerySet
 
 
 class Category(models.Model):
@@ -12,26 +13,26 @@ class Category(models.Model):
         "self", null=True, related_name="category", on_delete=models.SET_NULL
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.id} - {self.name}"
 
-    def get_parent(self):
+    def get_parent(self) -> "QuerySet[Category]":
         """ Get parent nodes """
         return Category.objects.filter(lft__lt=self.lft, rgt__gt=self.rgt).order_by(
             "rgt"
         )
 
-    def get_all_children(self):
+    def get_all_children(self) -> "QuerySet[Category]":
         """ Get all children nodes """
         return Category.objects.filter(lft__gt=self.lft, rgt__lt=self.rgt).order_by(
             "lft"
         )
 
-    def get_children(self):
+    def get_children(self) -> "QuerySet[Category]":
         """ Get children """
         return Category.objects.filter(parent=self).order_by("name")
 
-    def get_siblings(self, include_self=False):
+    def get_siblings(self, include_self=False) -> "QuerySet[Category]":
         """
         Get siblings nodes.
 
@@ -54,7 +55,7 @@ class Category(models.Model):
 
     @classmethod
     @transaction.atomic
-    def add_node(cls, name, parent):
+    def add_node(cls, name, parent) -> "Category":
         """ Add a child node """
         if not parent:
             # add root node
