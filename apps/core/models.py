@@ -1,6 +1,6 @@
 from typing import Optional, Tuple
 
-from django.db import models, transaction
+from django.db import models
 from django.db.models.expressions import F
 from django.db.models.query import QuerySet
 
@@ -43,7 +43,6 @@ class MPTTModel(models.Model):
         return qs
 
     @classmethod
-    @transaction.atomic
     def add_node(cls, name: str, parent: Optional["MPTTModel"] = None) -> "MPTTModel":
         """
         Adds new child node. Let's assume that there is only one root node.

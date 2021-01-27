@@ -1,6 +1,8 @@
 """ Category app's views """
 from typing import Dict, Optional
 
+from django.db import transaction
+
 from rest_framework import mixins, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -27,6 +29,7 @@ class CategoryViewSet(
             for child_item in item["children"]:
                 self.add_node(child_item, node)
 
+    @transaction.atomic
     def create(self, request, *args, **kwargs) -> Response:
         """ Create category tree """
         serializer = CategoryTreeSerializer(data=request.data)
